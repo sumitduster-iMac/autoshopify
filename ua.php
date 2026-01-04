@@ -300,6 +300,9 @@ class userAgent {
             }
             $userAgent = array_rand($agents);
         }
+        if (session_status() === PHP_SESSION_NONE) {
+            @session_start();
+        }
         $_SESSION['agent'] = $userAgent;
         if($userAgent == 'chrome') {
             return 'Mozilla/5.0 (' . $this->getOS($userAgent) . ') AppleWebKit/' . (random_int(1, 100) > 50 ? random_int(533, 537) : random_int(600, 603)) . '.' . random_int(1, 50) . ' (KHTML, like Gecko) Chrome/' . self::chromeVersion([ 'min' => 47,
@@ -316,7 +319,7 @@ class userAgent {
             return 'Mozilla/5.0 (' . $this->getMobileOS($userAgent) . ') AppleWebKit/' . (random_int(1, 100) > 50 ? random_int(533, 537) : random_int(600, 603)) . '.' . random_int(1, 50) . ' (KHTML, like Gecko)  Chrome/' . self::chromeVersion([ 'min' => 47,
                                                                                                                                                                                                                                                      'max' => 55 ]) . ' Mobile Safari/' . (random_int(1, 100) > 50 ? random_int(533, 537) : random_int(600, 603)) . '.' . random_int(0, 9);
         } else {
-            new Exception('Unable to determine user agent to generate');
+            throw new Exception('Unable to determine user agent to generate');
         }
     }
 }
