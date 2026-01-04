@@ -7,9 +7,7 @@ echo "Starting Container"
 echo "Starting PHP-FPM..."
 php-fpm -D
 
-# Give PHP-FPM a moment to start
-sleep 1
-
 # Start Nginx in the foreground
+# Note: Nginx will handle PHP-FPM connection failures gracefully
 echo "Starting Nginx..."
 exec nginx -g "daemon off;"
