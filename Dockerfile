@@ -11,6 +11,10 @@ RUN apt-get update && apt-get install -y \
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/default
 
+# Copy and setup startup script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Copy application files
 COPY . /var/www/html/
 
@@ -20,5 +24,5 @@ RUN chown -R www-data:www-data /var/www/html/
 # Expose port 80
 EXPOSE 80
 
-# Start PHP-FPM and Nginx
-CMD php-fpm -D && nginx -g "daemon off;"
+# Start services using the entrypoint script
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
